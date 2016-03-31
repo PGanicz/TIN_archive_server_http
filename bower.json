@@ -1,0 +1,9 @@
+{
+  "name": "Spring WebSocket Game",
+  "version": "0.1.2",
+  "authors": ["Piotr Ganicz <piotr.ganicz@gmail.com>"],
+  "dependencies": {
+    "angular": "1.4.1",
+    "sockjs": "~0.3.4"
+  }
+}
