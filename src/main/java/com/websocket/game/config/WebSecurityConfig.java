@@ -34,16 +34,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.csrf().disable()  //TODO
 			.formLogin()
-				.loginPage("/index.html")
-				.defaultSuccessUrl("/game.html")
+				.loginPage("/login")
 				.permitAll()
 				.and()
 			.logout()
-				.logoutSuccessUrl("/index.html")
+				.logoutSuccessUrl("/logout")
 				.permitAll()
 				.and()
 			.authorizeRequests()
-				.antMatchers("/js/**", "/lib/**", "/images/**", "/css/**", "/index.html", "/").permitAll()
+				.antMatchers("/user/register").permitAll()
+				.antMatchers("/game").authenticated()
+				.antMatchers("/user").authenticated()
 				.anyRequest().authenticated();
 				
 	}
