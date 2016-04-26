@@ -1,9 +1,9 @@
 package com.websocket.game.config;
 
-import java.util.List;
-
 import com.websocket.game.DAO.UserRepository;
 import com.websocket.game.domain.User;
+import com.websocket.game.security.AuthFailureHandler;
+import com.websocket.game.security.AuthSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -17,68 +17,78 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableRedisHttpSession
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private static String LOGIN_PATH = "/user/login";
+    private static String LOGOUT_PATH = "/user/logout";
 
-	@Autowired
-	public UserRepository userRepository;
+    @Autowired
+    private AuthSuccessHandler authSuccessHandler;
+    @Autowired
+    private AuthFailureHandler authFailureHandler;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.csrf().disable()  //TODO
-			.formLogin()
-				.loginPage("/login")
-				.permitAll()
-				.and()
-			.logout()
-				.logoutSuccessUrl("/logout")
-				.permitAll()
-				.and()
-			.authorizeRequests()
-				.antMatchers("/user/register").permitAll()
-				.antMatchers("/game").authenticated()
-				.antMatchers("/user").authenticated()
-				.anyRequest().authenticated();
-				
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()  //TODO
+                .formLogin()
+                .permitAll()
+                .loginProcessingUrl(LOGIN_PATH)
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .successHandler(authSuccessHandler)
+                .failureHandler(authFailureHandler)
+                .and()
+                .logout()
+                .permitAll()
+                .logoutUrl(LOGOUT_PATH)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/user/register").permitAll()
+                .antMatchers("/game").authenticated()
+                .antMatchers("/user").authenticated()
+                .anyRequest().authenticated();
+
+    }
 
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		
-		auth.authenticationProvider(new AuthenticationProvider() {
-			
-			@Override
-			public boolean supports(Class<?> authentication) {
-				return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
-			}
-			
-			@Override
-			public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-				UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-				//TODO
-				//password encryption
-				String username = String.valueOf(token.getPrincipal());
-				String password = String.valueOf(token.getCredentials());
-				User user = userRepository.findUserByUsername(username);
-				if(user==null || !user.password.equals(password))
-				{
-					throw new BadCredentialsException("Invalid credentials");
-				}
+        auth.authenticationProvider(new AuthenticationProvider() {
 
-				//TODO admin/user authorities
-				List<GrantedAuthority> authorities =  null;
-														
-				return new UsernamePasswordAuthenticationToken(token.getName(), token.getCredentials(), authorities);
-			}
-		});
-	}
+            @Override
+            public boolean supports(Class<?> authentication) {
+                return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+            }
+
+            @Override
+            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+                UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
+
+                //TODO
+                //password encryption
+                String username = String.valueOf(token.getPrincipal());
+                String password = String.valueOf(token.getCredentials());
+                User user = userRepository.findUserByUsername(username);
+                if (user == null || !user.password.equals(password)) {
+                    throw new BadCredentialsException("Invalid credentials");
+                }
+
+                //TODO admin/user authorities
+                List<GrantedAuthority> authorities = null;
+
+                return new UsernamePasswordAuthenticationToken(token.getName(), token.getCredentials(), authorities);
+            }
+        });
+    }
 }
