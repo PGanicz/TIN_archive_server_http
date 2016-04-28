@@ -1,17 +1,11 @@
 package com.websocket.game.domain;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-/**
- * Created by piotr on 30.03.16.
- */
-
 @Entity
-public class User
-{
+public class User {
     @Id
     @GeneratedValue
     public Long id;

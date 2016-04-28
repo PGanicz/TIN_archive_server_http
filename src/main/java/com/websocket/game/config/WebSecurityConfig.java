@@ -75,8 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             public Authentication authenticate(Authentication authentication) throws AuthenticationException {
                 UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
 
-                //TODO
-                //password encryption
                 String username = String.valueOf(token.getPrincipal());
                 String password = String.valueOf(token.getCredentials());
                 User user = userRepository.findUserByUsername(username);

@@ -16,9 +16,5 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-        System.out.println(request.getParameter("username"));
-        System.out.println(request.getParameter("password"));
-        System.out.println("DUPA");
     }
 }

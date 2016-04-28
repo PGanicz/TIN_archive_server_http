@@ -16,9 +16,5 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_OK);
-
-        System.out.println(request.getParameter("username"));
-        System.out.println(request.getParameter("password"));
-        System.out.println("OK");
     }
 }
