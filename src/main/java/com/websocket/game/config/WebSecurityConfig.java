@@ -2,6 +2,7 @@ package com.websocket.game.config;
 
 import com.websocket.game.DAO.UserRepository;
 import com.websocket.game.domain.User;
+import com.websocket.game.exceptions.UserNotActiveException;
 import com.websocket.game.security.AuthFailureHandler;
 import com.websocket.game.security.AuthSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl(LOGOUT_PATH)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/user/activate").permitAll()
                 .antMatchers("/user/register").permitAll()
                 .antMatchers("/game").authenticated()
                 .antMatchers("/user").authenticated()
@@ -81,6 +83,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 if (user == null || !user.password.equals(password)) {
                     throw new BadCredentialsException("Invalid credentials");
                 }
+
+                if(!user.active)
+                    throw new UserNotActiveException("User account is inactive");
 
                 //TODO admin/user authorities
                 List<GrantedAuthority> authorities = null;
