@@ -119,10 +119,10 @@ public class UserController {
     }
 
     private void sendActivateEmail(final User user, final String activateString) {
-        final String from = "gwentteam@gmail.com";
+        final String from = "tin432.32.11.23@gmail.com";
         final String msg = "Kliknij w link w celu aktywacji konta: http://localhost:7799/user/activate?activateString=" +
                 activateString;
-        final String subject = "Gwint - aktywacja konta";
+        final String subject = "Archive Server - aktywacja konta";
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(user.email);
