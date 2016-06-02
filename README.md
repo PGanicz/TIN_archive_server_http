@@ -1,19 +1,11 @@
-spring-websocket-game
+TIN_archive_server_http
 =====================
-
-
-Game application using AngularJS and Spring WebSockets
 
 
 ## Features
 - Built with Spring Boot
 - User login
-- Game Rooms
-- WebSocket security with Spring Security
-- Spring Session integration
+- File service
+- Activation service for admin
+- Spring Security
 
-##Before execution
-Please run "bower install" command in the root folder
-
-## Running the static
-gradle bootRun
