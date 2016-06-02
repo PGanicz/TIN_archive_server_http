@@ -1,5 +1,7 @@
 package com.websocket.game.web;
 
+import com.websocket.game.DAO.FileRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping(value = "/files")
 public class FileController {
+    @Autowired
+    public FileRepository fileRepository;
 
     //w kazdej metodzie trzeba sprawdzic czy user to moze.
     @RequestMapping(value = "/download/{file_name}", method = RequestMethod.GET)
