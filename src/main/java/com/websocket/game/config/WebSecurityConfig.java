@@ -18,8 +18,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -57,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/activate").permitAll()
                 .antMatchers("/user/register").permitAll()
                 .antMatchers("/files/**").authenticated()
+                .antMatchers("/admin**").hasRole("ADMIN")
                 .antMatchers("/user").authenticated()
                 .anyRequest().authenticated();
 
@@ -88,8 +91,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     throw new UserNotActiveException("User account is inactive");
 
                 //TODO admin/user authorities
-                List<GrantedAuthority> authorities = null;
 
+                SimpleGrantedAuthority admin = null;
+                List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+                if(username.compareTo("piotr")==0) {
+                    admin = new SimpleGrantedAuthority("ROLE_ADMIN");
+                    authorities.add(admin);
+                }
                 return new UsernamePasswordAuthenticationToken(token.getName(), token.getCredentials(), authorities);
             }
         });

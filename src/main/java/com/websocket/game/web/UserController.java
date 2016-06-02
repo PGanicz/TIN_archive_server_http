@@ -11,6 +11,7 @@ import com.websocket.game.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -55,10 +56,10 @@ public class UserController {
         final String activateString = generateActivateString(ACTIVATE_STRING_LEN);
         final ActivateUser activateUser = new ActivateUser(user, activateString);
 
-        sendActivateEmail(user, activateString);
+       // sendActivateEmail(user, activateString);
 
         userRepository.save(user);
-        activateUserRepository.save(activateUser);
+       // activateUserRepository.save(activateUser);
     }
 
     @RequestMapping(value = "/settings", method = RequestMethod.GET)

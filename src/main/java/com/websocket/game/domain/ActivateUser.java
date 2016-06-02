@@ -15,6 +15,15 @@ public class ActivateUser {
     @ManyToOne
     public User user;
 
+    @Override
+    public String toString() {
+        return "ActivateUser{" +
+                "id=" + id +
+                ", user=" + user +
+                ", activateString='" + activateString + '\'' +
+                '}';
+    }
+
     public String activateString;
 
     public ActivateUser() {
