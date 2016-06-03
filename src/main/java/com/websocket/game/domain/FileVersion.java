@@ -1,22 +1,20 @@
 package com.websocket.game.domain;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 /**
  * Created by piotr on 02.06.16.
  */
 @Entity
+@Table(name = "file_version")
 public class FileVersion {
     private long fileId;
     private Date timestamp;
     private long receivedDataSize;
 
     @Id
-    @Column(name = "fileId")
+    @Column(name = "file_id")
     public long getFileId() {
         return fileId;
     }
@@ -36,7 +34,7 @@ public class FileVersion {
     }
 
     @Basic
-    @Column(name = "receivedDataSize")
+    @Column(name = "received_data_size")
     public long getReceivedDataSize() {
         return receivedDataSize;
     }

@@ -9,6 +9,7 @@ import java.util.Set;
 @Entity
 public class File {
     private long id;
+    private long userid;
     private String filename;
     private int fileSize;
     private String deviceName;
@@ -24,6 +25,14 @@ public class File {
         this.id = id;
     }
 
+    @Column(name = "userId")
+    public long getUserId() {
+        return userid;
+    }
+
+    public void setUserId(long id) {
+        this.userid = id;
+    }
     @Basic
     @Column(name = "filename")
     public String getFilename() {
@@ -45,7 +54,7 @@ public class File {
     }
 
     @Basic
-    @Column(name = "deviceName")
+    @Column(name = "device_name")
     public String getDeviceName() {
         return deviceName;
     }
@@ -76,14 +85,5 @@ public class File {
         result = 31 * result + fileSize;
         result = 31 * result + (deviceName != null ? deviceName.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany
-    public Set<FileVersion> getOneToMany() {
-        return oneToMany;
-    }
-
-    public void setOneToMany(Set<FileVersion> oneToMany) {
-        this.oneToMany = oneToMany;
     }
 }

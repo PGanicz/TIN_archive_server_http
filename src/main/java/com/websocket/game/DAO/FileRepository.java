@@ -12,5 +12,5 @@ import java.util.Set;
  */
 public interface FileRepository extends JpaRepository<File, Long> {
 
-   // Set<File> findByUserId( Long id);
+    Set<File> findByUserId( Long id);
 }

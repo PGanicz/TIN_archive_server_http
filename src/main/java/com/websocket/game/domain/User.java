@@ -8,8 +8,6 @@ public class User {
     @Id
     @GeneratedValue
     public Long id;
-    @OneToMany
-    public Set<File> files;
 
     public boolean active = false;
     public String username;
