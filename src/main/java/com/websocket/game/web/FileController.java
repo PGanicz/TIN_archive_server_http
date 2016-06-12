@@ -41,53 +41,27 @@ public class FileController {
     public FileSystemResource getFile(@PathVariable("file_name") String fileName,
                                       @PathVariable("device") String device,
                                       @PathVariable("timestamp") String stamp,HttpServletResponse response,Principal p) {
-
-
-        System.out.println("File: "+fileName);
-
-        response.setHeader("Content-Disposition", "attachment; filename="+fileName);
-
-        return new FileSystemResource(getFileFor(fileName,device));
+        User u = userReposiotry.findUserByUsername(p.getName());
+        if(u!= null) {
+            response.setHeader("Content-Disposition", "attachment; filename="+fileName);
+            return new FileSystemResource(getFileFor(u.username,fileName,device,stamp));
+        }else
+       return null;
     }
     @RequestMapping(value = "/remove/{file_name}/{device}/{timestamp}", method = RequestMethod.GET)
     @ResponseBody
     public void removeFile(@PathVariable("file_name") String fileName,
                            @PathVariable("device") String device,
-                           @PathVariable("timestamp") String stamp) {
+                           @PathVariable("timestamp") String stamp, Principal p) {
+            User u = userReposiotry.findUserByUsername(p.getName());
+            if(u!= null) {
 
+            }
+    }
+    private String getFileFor(String username, String fileName,String device,String timestamp) {
+        return root+"/"+username+"/"+device+"/"+fileName+"/"+timestamp;
+    }
 
-    }
-    private String getFileFor(String fileName,String device) {
-        return root+fileName+"/"+device;
-    }
-    @RequestMapping(value = "/stamps/{file_name}/{device}", method = RequestMethod.GET)
-    public Date [] getStamps(@PathVariable(value="file_name")String file_name,@PathVariable(value="device") String device, Principal p)
-    {
-        User u = userReposiotry.findUserByUsername(p.getName());
-        Date[] result = null;
-        if(u!=null)
-        {
-            Set<File> files = fileRepository.findByUserId(u.id);
-            File[] arr =  (File[]) files.toArray();
-            File found = null;
-            for(int i = 0 ; i < arr.length; i++)
-            {
-                if(arr[i].getFilename() == file_name && arr[i].getDeviceName() == device)
-                    found = arr[i];
-            }
-            if(found != null)
-            {
-                Set<FileVersion> set = fileVersionReposiotry.findByFileId(found.getId());
-                FileVersion[] x = (FileVersion[]) set.toArray();
-                result = new Date[x.length];
-                for(int i = 0 ;i < x.length;i++)
-                {
-                    result[i] = x[i].getTimestamp();
-                }
-            }
-        }
-        return result;
-    }
 
     @RequestMapping(value = "/all",method = RequestMethod.GET)
     public Set<FileWithStamps> getAllFiles(Principal p)
