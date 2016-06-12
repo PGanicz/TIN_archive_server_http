@@ -17,6 +17,7 @@ public class File {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue
     public long getId() {
         return id;
     }
@@ -25,7 +26,7 @@ public class File {
         this.id = id;
     }
 
-    @Column(name = "userId")
+    @Column(name = "user_id")
     public long getUserId() {
         return userid;
     }
@@ -34,7 +35,7 @@ public class File {
         this.userid = id;
     }
     @Basic
-    @Column(name = "filename")
+    @Column(name = "file_name")
     public String getFilename() {
         return filename;
     }
@@ -44,7 +45,7 @@ public class File {
     }
 
     @Basic
-    @Column(name = "fileSize")
+    @Column(name = "file_size")
     public int getFileSize() {
         return fileSize;
     }

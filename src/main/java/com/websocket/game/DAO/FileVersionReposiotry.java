@@ -11,5 +11,5 @@ import java.util.Set;
  * Created by piotr on 02.06.16.
  */
 public interface FileVersionReposiotry extends JpaRepository<FileVersion, Long> {
-    Set<File> findByFileId(Long id);
+    Set<FileVersion> findByFileId(Long id);
 }

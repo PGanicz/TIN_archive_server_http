@@ -98,6 +98,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     admin = new SimpleGrantedAuthority("ROLE_ADMIN");
                     authorities.add(admin);
                 }
+                admin = new SimpleGrantedAuthority("ROLE_USER");
+                authorities.add(admin);
+
                 return new UsernamePasswordAuthenticationToken(token.getName(), token.getCredentials(), authorities);
             }
         });

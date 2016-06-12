@@ -12,8 +12,13 @@ public class FileVersion {
     private long fileId;
     private Date timestamp;
     private long receivedDataSize;
-
+    private long versionId;
     @Id
+    @GeneratedValue
+    @Column(name = "version_id")
+    public long getVersionId() { return versionId;}
+    public void setVersionId(long versionId) {this.versionId =versionId;}
+
     @Column(name = "file_id")
     public long getFileId() {
         return fileId;
