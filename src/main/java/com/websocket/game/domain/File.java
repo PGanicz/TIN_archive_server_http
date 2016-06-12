@@ -15,6 +15,18 @@ public class File {
     private String deviceName;
     private Set<FileVersion> oneToMany;
 
+    @Override
+    public String toString() {
+        return "File{" +
+                "id=" + id +
+                ", userid=" + userid +
+                ", filename='" + filename + '\'' +
+                ", fileSize=" + fileSize +
+                ", deviceName='" + deviceName + '\'' +
+                ", oneToMany=" + oneToMany +
+                '}';
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue

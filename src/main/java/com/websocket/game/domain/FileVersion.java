@@ -13,6 +13,17 @@ public class FileVersion {
     private Date timestamp;
     private long receivedDataSize;
     private long versionId;
+
+    @Override
+    public String toString() {
+        return "FileVersion{" +
+                "fileId=" + fileId +
+                ", timestamp=" + timestamp +
+                ", receivedDataSize=" + receivedDataSize +
+                ", versionId=" + versionId +
+                '}';
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "version_id")
