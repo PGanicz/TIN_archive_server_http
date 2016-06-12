@@ -6,6 +6,7 @@ import com.websocket.game.DAO.UserRepository;
 import com.websocket.game.domain.File;
 import com.websocket.game.domain.FileVersion;
 import com.websocket.game.domain.User;
+import com.websocket.game.exceptions.FileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.access.method.P;
@@ -40,13 +41,14 @@ public class FileController {
     @ResponseBody
     public FileSystemResource getFile(@PathVariable("file_name") String fileName,
                                       @PathVariable("device") String device,
-                                      @PathVariable("timestamp") String stamp,HttpServletResponse response,Principal p) {
+                                      @PathVariable("timestamp") String stamp,HttpServletResponse response,
+                                      Principal p) throws FileNotFoundException {
         User u = userReposiotry.findUserByUsername(p.getName());
         if(u!= null) {
             response.setHeader("Content-Disposition", "attachment; filename="+fileName);
             return new FileSystemResource(getFileFor(u.username,fileName,device,stamp));
         }else
-       return null;
+            throw new FileNotFoundException();
     }
     @RequestMapping(value = "/remove/{file_name}/{device}/{timestamp}", method = RequestMethod.GET)
     @ResponseBody
