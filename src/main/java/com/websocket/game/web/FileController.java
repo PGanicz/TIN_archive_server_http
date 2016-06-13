@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,7 +46,7 @@ public class FileController {
                                       Principal p) throws FileNotFoundException {
         User u = userReposiotry.findUserByUsername(p.getName());
         if(u!= null) {
-            response.setHeader("Content-Disposition", "attachment; filename="+fileName);
+            response.setHeader("Content-Disposition", "attachment; filename="+fileName+"_"+stamp);
             return new FileSystemResource(getFileFor(u.username,fileName,device,stamp));
         }else
             throw new FileNotFoundException();
@@ -61,11 +62,10 @@ public class FileController {
                 String path = getFileFor(u.username,fileName,device,stamp);
                 java.io.File file = new java.io.File(path);
                 if(!file.delete()) throw new FileNotFoundException();
-                try {
                     Set<FileWithStamps> allFiles = getAllFiles(p);
                     if(allFiles==null) System.out.println("null");
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = format.parse(stamp);
+                    Timestamp date = Timestamp.valueOf(stamp);
                     for(FileWithStamps fileWithStamps: allFiles)
                     {
                         if(fileWithStamps.file.getFilename().compareTo(fileName) == 0&&
@@ -86,13 +86,11 @@ public class FileController {
                         }
 
                     }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+
             }
     }
     private String getFileFor(String username, String fileName,String device,String timestamp) {
-        return root+"/"+username+"/"+device+"/"+fileName+"/"+timestamp;
+        return root+"/"+username+"/"+device+"/"+fileName+"_"+timestamp;
     }
 
 

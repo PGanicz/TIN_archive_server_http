@@ -2,6 +2,7 @@ package com.websocket.game.domain;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by piotr on 02.06.16.
@@ -10,7 +11,7 @@ import java.sql.Date;
 @Table(name = "file_version")
 public class FileVersion {
     private long fileId;
-    private Date timestamp;
+    private Timestamp timestamp;
     private long receivedDataSize;
     private long versionId;
 
@@ -41,11 +42,11 @@ public class FileVersion {
 
     @Basic
     @Column(name = "timestamp")
-    public Date getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
